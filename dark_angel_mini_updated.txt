@@ -515,10 +515,8 @@ local function createMobilePanel()
         local GAP = 12
         local COL1_X = -(BTN_W + GAP + BTN_W + 10)
         local COL2_X = -(BTN_W + 10)
-        -- CHANGE: moved buttons slightly higher (was 0.35, now 0.30)
         local BASE_Y = 0.30
-        local ROW_Y  = {-((BTN_H*4+GAP*3)/2), -((BTN_H*4+GAP*3)/2)+(BTN_H+GAP),
-                        -((BTN_H*4+GAP*3)/2)+(BTN_H+GAP)*2, -((BTN_H*4+GAP*3)/2)+(BTN_H+GAP)*3}
+        local ROW_Y  = {-((BTN_H*2+GAP)/2), -((BTN_H*2+GAP)/2)+(BTN_H+GAP), 0, 0}
 
         local function makeSeparateBtn(name, text, defaultPos, saveKey, callback, isToggle)
                 local container = Instance.new("Frame")
@@ -653,47 +651,11 @@ local function createMobilePanel()
                         autoSaveConfig()
                 end, true)
 
-        local tpDownSetActive = makeSeparateBtn("BtnTpDown", "TP\nDOWN",
-                UDim2.new(1, COL1_X, BASE_Y, ROW_Y[3]), "VexulBtn_tpdown.txt",
-                function(setActive, currentActive)
-                        tpToGround()
-                        if setMenuTpDown then setMenuTpDown(true) end
-                        task.delay(0.5, function()
-                                if setMenuTpDown then setMenuTpDown(false) end
-                                setActive(false)
-                        end)
-                end, true)
-
-        local carrySpeedSetActive = makeSeparateBtn("BtnCarrySpd", "CARRY\nSPD",
-                UDim2.new(1, COL2_X, BASE_Y, ROW_Y[3]), "VexulBtn_carryspd.txt",
-                function(setActive)
-                        toggleSpeedType()
-                        setActive(State.speedType == "carry")
-                end, true)
-
-        local laggerCarrySetActive = makeSeparateBtn("BtnLaggerCarry", "LAGGER\nCARRY",
-                UDim2.new(1, COL1_X, BASE_Y, ROW_Y[4]), "VexulBtn_laggercarry.txt",
-                function(setActive)
-                        toggleLaggerCarry()
-                        setActive(State.laggerCarryActive)
-                end, true)
-
-        local laggerSetActive = makeSeparateBtn("BtnLaggerMode", "LAGGER\nMODE",
-                UDim2.new(1, COL2_X, BASE_Y, ROW_Y[4]), "VexulBtn_laggermode.txt",
-                function(setActive)
-                        toggleLagger()
-                        setActive(State.laggerActive)
-                end, true)
-
         MobileButtons.Buttons = {
                 autoLeft = autoLeftSetActive,
                 autoRight = autoRightSetActive,
                 autoBat = autoBatSetActive,
-                carrySpeed = carrySpeedSetActive,
-                lagger = laggerSetActive,
                 dropBR = dropBRSetActive,
-                tpDown = tpDownSetActive,
-                laggerCarry = laggerCarrySetActive,
         }
 
         task.spawn(function()
@@ -701,28 +663,25 @@ local function createMobilePanel()
                 if MobileButtons.Buttons.autoLeft then MobileButtons.Buttons.autoLeft(State.autoLeftEnabled) end
                 if MobileButtons.Buttons.autoRight then MobileButtons.Buttons.autoRight(State.autoRightEnabled) end
                 if MobileButtons.Buttons.autoBat then MobileButtons.Buttons.autoBat(State.autoBatToggled) end
-                if MobileButtons.Buttons.carrySpeed then MobileButtons.Buttons.carrySpeed(State.speedType == "carry") end
-                if MobileButtons.Buttons.lagger then MobileButtons.Buttons.lagger(State.laggerActive) end
-                if MobileButtons.Buttons.laggerCarry then MobileButtons.Buttons.laggerCarry(State.laggerCarryActive) end
         end)
 
         return panel
 end
 
 -- ================= INTERFACE GRAPHIQUE =================
-local C_BG      = Color3.fromRGB(6,6,6)
-local C_PANEL   = Color3.fromRGB(12,12,12)
-local C_ROW     = Color3.fromRGB(16,16,16)
-local C_ROW_HOV = Color3.fromRGB(26,26,26)
-local C_BORDER  = Color3.fromRGB(50,50,50)
-local C_BORDER2 = Color3.fromRGB(70,70,70)
-local C_HEADER  = Color3.fromRGB(4,4,4)
-local C_ACCENT  = Color3.fromRGB(240,240,240)
-local C_ACCENT2 = Color3.fromRGB(180,180,180)
-local C_DIM     = Color3.fromRGB(100,100,100)
+local C_BG      = Color3.fromRGB(12,12,12)
+local C_PANEL   = Color3.fromRGB(18,18,18)
+local C_ROW     = Color3.fromRGB(24,24,24)
+local C_ROW_HOV = Color3.fromRGB(32,32,32)
+local C_BORDER  = Color3.fromRGB(45,45,45)
+local C_BORDER2 = Color3.fromRGB(65,65,65)
+local C_HEADER  = Color3.fromRGB(14,14,14)
+local C_ACCENT  = Color3.fromRGB(220,220,220)
+local C_ACCENT2 = Color3.fromRGB(160,160,160)
+local C_DIM     = Color3.fromRGB(90,90,90)
 local C_WHITE   = Color3.fromRGB(255,255,255)
-local C_ON_BG   = Color3.fromRGB(50,50,50)
-local C_OFF_BG  = Color3.fromRGB(16,16,16)
+local C_ON_BG   = Color3.fromRGB(55,55,55)
+local C_OFF_BG  = Color3.fromRGB(22,22,22)
 local C_KEY_BG  = Color3.fromRGB(0,0,0)
 
 local Anims = {
@@ -950,7 +909,7 @@ gui.IgnoreGuiInset=true; gui.Parent=LP:WaitForChild("PlayerGui")
 local stealProgressBar = Instance.new("Frame", gui)
 stealProgressBar.Size = UDim2.new(0, 290, 0, 68)
 stealProgressBar.Position = UDim2.new(0.5, -145, 1, -85)
-stealProgressBar.BackgroundColor3 = Color3.fromRGB(6, 6, 6)
+stealProgressBar.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
 stealProgressBar.BackgroundTransparency = 0
 stealProgressBar.BorderSizePixel = 0
 stealProgressBar.ZIndex = 100
@@ -958,7 +917,7 @@ stealProgressBar.ClipsDescendants = true
 local spCorner = Instance.new("UICorner", stealProgressBar)
 spCorner.CornerRadius = UDim.new(0, 14)
 local spStroke = Instance.new("UIStroke", stealProgressBar)
-spStroke.Color = Color3.fromRGB(255, 255, 255)
+spStroke.Color = Color3.fromRGB(65, 65, 65)
 spStroke.Thickness = 1
 
 -- ✦ FALLING STARS background for steal bar
@@ -991,7 +950,7 @@ pctLbl.Size = UDim2.new(0.42, 0, 0, 30)
 pctLbl.Position = UDim2.new(0, 14, 0, 7)
 pctLbl.BackgroundTransparency = 1
 pctLbl.Text = "0%"
-pctLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+pctLbl.TextColor3 = Color3.fromRGB(220, 220, 220)
 pctLbl.Font = Enum.Font.GothamBlack
 pctLbl.TextSize = 24
 pctLbl.TextXAlignment = Enum.TextXAlignment.Left
@@ -1003,7 +962,7 @@ progressRadLbl.Size = UDim2.new(0.58, -14, 0, 30)
 progressRadLbl.Position = UDim2.new(0.42, 0, 0, 7)
 progressRadLbl.BackgroundTransparency = 1
 progressRadLbl.Text = "Steal Radius: "..AutoSteal.Radius
-progressRadLbl.TextColor3 = Color3.fromRGB(200, 200, 200)
+progressRadLbl.TextColor3 = Color3.fromRGB(160, 160, 160)
 progressRadLbl.Font = Enum.Font.GothamBlack
 progressRadLbl.TextSize = 14
 progressRadLbl.TextXAlignment = Enum.TextXAlignment.Right
@@ -1013,7 +972,7 @@ progressRadLbl.ZIndex = 102
 local barTrack = Instance.new("Frame", stealProgressBar)
 barTrack.Size = UDim2.new(1, -28, 0, 14)
 barTrack.Position = UDim2.new(0, 14, 0, 44)
-barTrack.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+barTrack.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
 barTrack.BorderSizePixel = 0
 barTrack.ZIndex = 102
 Instance.new("UICorner", barTrack).CornerRadius = UDim.new(1, 0)
@@ -1127,9 +1086,9 @@ local main = Instance.new("Frame",gui)
 main.Name="Main"; main.Size=UDim2.new(0,270,0,460)
 main.Position=UDim2.new(0,20,0,20)
 main.BackgroundColor3=C_BG; main.BorderSizePixel=0; main.Active=true; main.ClipsDescendants=true
-Instance.new("UICorner",main).CornerRadius=UDim.new(0,18)
+Instance.new("UICorner",main).CornerRadius=UDim.new(0,16)
 local mainStroke = Instance.new("UIStroke",main)
-mainStroke.Color=Color3.fromRGB(255,255,255); mainStroke.Thickness=1
+mainStroke.Color=C_BORDER2; mainStroke.Thickness=1
 
 -- ✦ FALLING STARS background for main panel
 local function spawnMainStar()
@@ -1199,7 +1158,7 @@ header.Size=UDim2.new(1,0,0,56); header.BackgroundColor3=C_HEADER; header.Border
 Instance.new("UICorner",header).CornerRadius=UDim.new(0,18)
 local headerDiv = Instance.new("Frame",header)
 headerDiv.Size=UDim2.new(1,-20,0,1); headerDiv.Position=UDim2.new(0,10,1,-1)
-headerDiv.BackgroundColor3=Color3.fromRGB(255,255,255); headerDiv.BorderSizePixel=0; headerDiv.ZIndex=6
+headerDiv.BackgroundColor3=C_BORDER; headerDiv.BorderSizePixel=0; headerDiv.ZIndex=6
 
 -- Angel icon + title
 local angelIcon = Instance.new("TextLabel",header)
@@ -1210,34 +1169,34 @@ angelIcon.Font=Enum.Font.GothamBlack; angelIcon.TextSize=18; angelIcon.ZIndex=7
 local titleLbl = Instance.new("TextLabel",header)
 titleLbl.Size=UDim2.new(1,-70,0,22); titleLbl.Position=UDim2.new(0,40,0.5,-11)
 titleLbl.BackgroundTransparency=1; titleLbl.Text="DARK ANGEL MINI"
-titleLbl.TextColor3=Color3.fromRGB(255,255,255); titleLbl.Font=Enum.Font.GothamBlack; titleLbl.TextSize=15
+titleLbl.TextColor3=C_WHITE; titleLbl.Font=Enum.Font.GothamBlack; titleLbl.TextSize=15
 titleLbl.TextXAlignment=Enum.TextXAlignment.Left; titleLbl.ZIndex=6
 local titleStroke = Instance.new("UIStroke",titleLbl)
-titleStroke.Color=Color3.fromRGB(80,80,80); titleStroke.Thickness=1
+titleStroke.Color=Color3.fromRGB(40,40,40); titleStroke.Thickness=1
 
 local subtitleLbl = Instance.new("TextLabel",header)
 subtitleLbl.Size=UDim2.new(1,-70,0,12); subtitleLbl.Position=UDim2.new(0,40,0.5,12)
 subtitleLbl.BackgroundTransparency=1; subtitleLbl.Text="✦ updated ✦"
-subtitleLbl.TextColor3=Color3.fromRGB(130,130,130); subtitleLbl.Font=Enum.Font.GothamBold; subtitleLbl.TextSize=9
+subtitleLbl.TextColor3=Color3.fromRGB(90,90,90); subtitleLbl.Font=Enum.Font.GothamBold; subtitleLbl.TextSize=9
 subtitleLbl.TextXAlignment=Enum.TextXAlignment.Left; subtitleLbl.ZIndex=6
 
 local closeBtn = Instance.new("TextButton",gui)
 closeBtn.Size=UDim2.new(0,28,0,28)
-closeBtn.BackgroundColor3=Color3.fromRGB(12,12,12); closeBtn.BorderSizePixel=0
-closeBtn.Text="✕"; closeBtn.TextColor3=Color3.fromRGB(200,200,200)
+closeBtn.BackgroundColor3=Color3.fromRGB(30,30,30); closeBtn.BorderSizePixel=0
+closeBtn.Text="✕"; closeBtn.TextColor3=Color3.fromRGB(180,180,180)
 closeBtn.Font=Enum.Font.GothamBlack; closeBtn.TextSize=13; closeBtn.ZIndex=50
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 local closeBtnStroke = Instance.new("UIStroke",closeBtn)
-closeBtnStroke.Color=Color3.fromRGB(255,255,255); closeBtnStroke.Thickness=1
+closeBtnStroke.Color=C_BORDER2; closeBtnStroke.Thickness=1
 closeBtnRef = closeBtn
 
 closeBtn.MouseEnter:Connect(function()
-        TweenService:Create(closeBtn,TweenInfo.new(0.12),{BackgroundColor3=Color3.fromRGB(40,40,40),TextColor3=C_WHITE}):Play()
-        TweenService:Create(closeBtnStroke,TweenInfo.new(0.12),{Color=Color3.fromRGB(255,255,255)}):Play()
+        TweenService:Create(closeBtn,TweenInfo.new(0.12),{BackgroundColor3=Color3.fromRGB(180,40,40),TextColor3=C_WHITE}):Play()
+        TweenService:Create(closeBtnStroke,TweenInfo.new(0.12),{Color=Color3.fromRGB(220,60,60)}):Play()
 end)
 closeBtn.MouseLeave:Connect(function()
-        TweenService:Create(closeBtn,TweenInfo.new(0.12),{BackgroundColor3=Color3.fromRGB(12,12,12),TextColor3=Color3.fromRGB(200,200,200)}):Play()
-        TweenService:Create(closeBtnStroke,TweenInfo.new(0.12),{Color=Color3.fromRGB(255,255,255)}):Play()
+        TweenService:Create(closeBtn,TweenInfo.new(0.12),{BackgroundColor3=Color3.fromRGB(30,30,30),TextColor3=Color3.fromRGB(180,180,180)}):Play()
+        TweenService:Create(closeBtnStroke,TweenInfo.new(0.12),{Color=C_BORDER2}):Play()
 end)
 closeBtn.MouseButton1Click:Connect(function()
         main.Visible = false
@@ -1249,7 +1208,7 @@ miniBtn = Instance.new("TextButton",gui)
 miniBtn.Name = "VexulMiniButton"
 miniBtn.Size = UDim2.new(0,160,0,32)
 miniBtn.Position = UDim2.new(0,8,0,66)
-miniBtn.BackgroundColor3 = Color3.fromRGB(6,6,6)
+miniBtn.BackgroundColor3 = Color3.fromRGB(12,12,12)
 miniBtn.BackgroundTransparency = 0
 miniBtn.BorderSizePixel = 0
 miniBtn.Text = "★ DARK ANGEL MINI"
@@ -1261,7 +1220,7 @@ miniBtn.Visible = false
 miniBtn.ZIndex = 50
 Instance.new("UICorner", miniBtn).CornerRadius = UDim.new(0, 8)
 local miniStroke = Instance.new("UIStroke", miniBtn)
-miniStroke.Color = Color3.fromRGB(255,255,255); miniStroke.Thickness = 1
+miniStroke.Color = Color3.fromRGB(65,65,65); miniStroke.Thickness = 1
 
 miniBtn.MouseButton1Click:Connect(function()
         main.Visible = true
@@ -1270,12 +1229,12 @@ miniBtn.MouseButton1Click:Connect(function()
 end)
 
 miniBtn.MouseEnter:Connect(function()
-        TweenService:Create(miniBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(22,22,22)}):Play()
-        TweenService:Create(miniStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(255,255,255)}):Play()
+        TweenService:Create(miniBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(25,25,25)}):Play()
+        TweenService:Create(miniStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(90,90,90)}):Play()
 end)
 miniBtn.MouseLeave:Connect(function()
-        TweenService:Create(miniBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(6,6,6)}):Play()
-        TweenService:Create(miniStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(255,255,255)}):Play()
+        TweenService:Create(miniBtn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(12,12,12)}):Play()
+        TweenService:Create(miniStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(65,65,65)}):Play()
 end)
 
 miniButtonRef = miniBtn
